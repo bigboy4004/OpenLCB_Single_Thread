@@ -31,6 +31,19 @@
             wdt_enable(WDTO_15MS);   \
             while (1) {}
 #endif
+// AVR Dx
+#ifdef __AVR_ARCH__
+#ifdef ENABLE_MESSAGE_PRAGMAS 
+	//#pragma message("AVR Dx Selected")
+#endif
+#define ESTRING(s) s          // default conversion - nil
+#include <EEPROM.h>
+#include <avr/wdt.h>
+#define REBOOT                   \
+    		wdt_disable();					 \
+            wdt_enable(WDTO_15MS);   \
+            while (1) {}
+#endif
 // Tinys
 #if defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
     #include <can.h>
@@ -42,19 +55,28 @@
     #pragma message("ATMega selected")
 #endif
     #define ATMEGA
-    #include "MCP2515/MCPcan.h"
+    #include "MCP2517/MCPcan.h"
+    //#include "MCP2515/MCPcan.h"
 
 // Mega 16, 32
 #elif defined(__AVR_ATmega16__) || defined(__AVR_ATmega32__) 
-    #include "MCP2515/MCPcan.h"
+    #include "MCP2517/MCPcan.h"
+    //#include "MCP2515/MCPcan.h"
 
 // Mega 128, 1280 & 2560
 #elif defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-    #include "MCP2515/MCPcan.h"
+    #include "MCP2517/MCPcan.h"
+    //#include "MCP2515/MCPcan.h"
 
 // Sanguino
 #elif defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
-    #include "MCP2515/MCPcan.h"
+    #include "MCP2517/MCPcan.h"
+    //#include "MCP2515/MCPcan.h"
+
+// AVR DA or AVR DB
+#elif defined(__AVR_DA__) || defined(__AVR_DB__)
+    #include "MCP2517/MCPcan.h"
+    //#include "MCP2515/MCPcan.h"
 
 // AT90CAN
 #elif defined(__AVR_AT90CAN32__) || defined(__AVR_AT90CAN64__) || defined(__AVR_AT90CAN128__)
